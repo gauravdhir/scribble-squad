@@ -1,0 +1,381 @@
+/* 
+ * LANDING PAGE OVERRIDE - EXACT MOCK MATCH
+ * This file overrides all previous styles to match the mock precisely
+ */
+
+/* Background - Deep space with stars and neon light trails */
+body {
+    background:
+        linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+        linear-gradient(225deg, rgba(0, 242, 255, 0.1) 0%, transparent 50%),
+        #0a0e27 !important;
+    background-attachment: fixed !important;
+}
+
+/* Add animated light trails */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 230, 0.15) 0%, transparent 20%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glass-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section - Horizontal Layout */
+.hero-section {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3rem !important;
+    padding: 4rem 0 3rem 0 !important;
+    margin: 0 !important;
+}
+
+/* CREATE YOUR SQUAD - Vibrant Gradient Card */
+.create-card {
+    background: linear-gradient(135deg, #ff00e6 0%, #9333ea 50%, #00f2ff 100%) !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 2.5rem 5rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow:
+        0 10px 40px rgba(255, 0, 230, 0.5),
+        0 5px 20px rgba(0, 242, 255, 0.3),
+        0 0 60px rgba(147, 51, 234, 0.4) !important;
+    backdrop-filter: none !important;
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.create-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #ff00e6, #9333ea, #00f2ff);
+    border-radius: 25px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.create-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow:
+        0 15px 60px rgba(255, 0, 230, 0.6),
+        0 10px 30px rgba(0, 242, 255, 0.4),
+        0 0 80px rgba(147, 51, 234, 0.5) !important;
+}
+
+.create-card:hover::before {
+    opacity: 0.8;
+}
+
+.create-text {
+    font-size: 2.8rem !important;
+    font-weight: 900 !important;
+    color: white !important;
+    text-align: center !important;
+    letter-spacing: 1px !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.create-text span {
+    display: block !important;
+}
+
+/* Join Section - Right side of Create Button */
+.join-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.8rem !important;
+    margin: 0 !important;
+}
+
+.join-label {
+    font-size: 0.95rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+}
+
+.join-input-wrapper {
+    display: flex !important;
+    gap: 1rem !important;
+    align-items: center !important;
+}
+
+.room-code-input {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 0.9rem 1.5rem !important;
+    width: 160px !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    text-align: center !important;
+    letter-spacing: 2px !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.room-code-input::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+    letter-spacing: 1px !important;
+}
+
+.room-code-input:focus {
+    outline: none !important;
+    border-color: rgba(0, 242, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3) !important;
+}
+
+.btn-join {
+    background: linear-gradient(135deg, #ff00e6, #00f2ff) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.9rem 2.5rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    color: white !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 5px 20px rgba(255, 0, 230, 0.4) !important;
+    letter-spacing: 1px !important;
+}
+
+.btn-join:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 30px rgba(255, 0, 230, 0.5) !important;
+}
+
+/* Discovery Section - Glassmorphic Container */
+.discovery-section {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(40px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 30px !important;
+    padding: 3rem !important;
+    margin-top: 3rem !important;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.discovery-header {
+    margin-bottom: 2.5rem !important;
+}
+
+.discovery-title {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    color: white !important;
+    letter-spacing: 2px !important;
+    margin: 0 !important;
+}
+
+/* Discovery Section - Compact */
+.discovery-section {
+    margin-top: 2rem !important;
+    padding: 3rem !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(40px) !important;
+    border-radius: 40px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative !important;
+}
+
+.discovery-header {
+    margin-bottom: 2rem !important;
+}
+
+.discovery-title {
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+    color: rgba(0, 242, 255, 0.8) !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    display: block !important;
+}
+
+/* Compact Layout - Scrollable content */
+.lobby-wrapper {
+    padding-bottom: 5rem !important;
+}
+
+.host-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00f2ff, #9d00ff);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+    z-index: 20;
+}
+
+/* Discovery Grid - Overlapping Cards */
+.discovery-grid {
+    display: flex !important;
+    gap: 0 !important;
+    padding: 2rem 1rem 4rem 1rem !important;
+    overflow-x: auto !important;
+    align-items: center !important;
+    min-height: 400px !important;
+}
+
+.discovery-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.discovery-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.party-card {
+    min-width: 320px !important;
+    height: 220px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 30px !important;
+    padding: 2.5rem !important;
+    position: relative !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    cursor: default !important;
+    flex-shrink: 0 !important;
+    border: 3px solid transparent !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.card-content {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* Overlapping & Rotation Effect */
+.party-card:nth-child(odd) {
+    transform: rotate(-2deg) translateX(0);
+    z-index: 10;
+}
+
+.party-card:nth-child(even) {
+    transform: rotate(3deg) translateX(-40px);
+    z-index: 5;
+}
+
+.party-card:hover {
+    transform: translateY(-15px) scale(1.05) rotate(0deg) !important;
+    z-index: 100 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dynamic Glowing Borders */
+.party-card:nth-child(3n+1) {
+    border-color: #00f2ff !important;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2) !important;
+}
+
+.party-card:nth-child(3n+2) {
+    border-color: #ff00e6 !important;
+    box-shadow: 0 0 30px rgba(255, 0, 230, 0.2) !important;
+}
+
+.party-card:nth-child(3n+3) {
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2) !important;
+}
+
+.party-name {
+    font-size: 2.2rem !important;
+    font-weight: 900 !important;
+    color: white !important;
+    margin-bottom: 0.5rem !important;
+    letter-spacing: 1px !important;
+}
+
+.party-description {
+    font-size: 1.1rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-weight: 400 !important;
+}
+
+/* Circular Knock Button */
+.knock-btn-wrapper {
+    position: absolute !important;
+    bottom: -35px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 10 !important;
+}
+
+.btn-circle-knock {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    border: 3px solid white !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    color: white !important;
+    font-size: 0.8rem !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.party-card:nth-child(3n+1) .btn-circle-knock {
+    border-color: #00f2ff !important;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5) !important;
+}
+
+.party-card:nth-child(3n+2) .btn-circle-knock {
+    border-color: #ff00e6 !important;
+    box-shadow: 0 0 20px rgba(255, 0, 230, 0.5) !important;
+}
+
+.party-card:nth-child(3n+3) .btn-circle-knock {
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5) !important;
+}
+
+.btn-circle-knock:hover {
+    transform: scale(1.1) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-circle-knock.disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: none !important;
+}

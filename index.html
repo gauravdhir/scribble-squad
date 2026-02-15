@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribble Squad | Collaborative Chaos</title>
+    <meta name="description" content="A real-time collaborative drawing party game for friends.">
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/features/theme/theme-styles.css">
+    <link rel="stylesheet" href="landing-override.css">
+</head>
+
+<body class="space-theme">
+    <div id="app" class="glass-container">
+        <h1 class="sr-only">SCRIBBLE SQUAD</h1>
+        <!-- Background Elements -->
+        <div class="neon-tube tube-1"></div>
+        <div class="neon-tube tube-2"></div>
+
+        <header class="app-header">
+            <div class="header-inner">
+                <div class="app-logo">
+                    <span class="logo-text">SCRIBBLE <span class="accent-glow">SQUAD</span></span>
+                </div>
+                <button id="menu-toggle" class="btn-menu">
+                    <svg class="menu-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <span class="menu-label">MENU</span>
+                    <div class="avatar"></div>
+                </button>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- Feature-specific content injected here -->
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Initializing Galactic Ink...</p>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 Scribble Squad. Join the Chaos.</p>
+        </footer>
+    </div>
+    <script src="src/main.js" type="module"></script>
+</body>
+
+</html>

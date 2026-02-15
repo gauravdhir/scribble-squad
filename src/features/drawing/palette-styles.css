@@ -1,0 +1,210 @@
+/* --- NEW PALETTE & DRAWING TOOLS --- */
+
+.palette-wrapper {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 20, 40, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.palette-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.tool-item-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-color {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.btn-color:hover {
+    transform: scale(1.15);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px currentColor;
+}
+
+.btn-color.active {
+    transform: scale(1.25);
+    border-color: white;
+    box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+    z-index: 2;
+}
+
+/* Eraser Button */
+.btn-eraser {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-left: 1rem;
+}
+
+.btn-eraser:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-eraser.active {
+    background: rgba(0, 242, 255, 0.2);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+    transform: scale(1.15);
+    color: var(--neon-blue);
+}
+
+/* Tool Slider Popup */
+.tool-slider-popup {
+    position: absolute;
+    bottom: 140%;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 50px;
+    height: 180px;
+    background: rgba(10, 20, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 200;
+}
+
+.tool-slider-popup.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Triangle pointer for popup */
+.tool-slider-popup::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(10, 20, 40, 0.95);
+}
+
+/* Vertical Slider Reset & Styling */
+.size-slider-vertical {
+    -webkit-appearance: none;
+    /* Remove default styling */
+    appearance: none;
+    width: 140px;
+    /* Use width for length since it's rotated */
+    height: 20px;
+    /* Touch target size */
+    background: transparent;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity .2s;
+    cursor: pointer;
+    transform: rotate(-90deg);
+    /* Rotate to vertical */
+    border-radius: 10px;
+}
+
+/* Slider Track */
+.size-slider-vertical::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.size-slider-vertical::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* Slider Thumb */
+.size-slider-vertical::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: var(--neon-blue);
+    cursor: pointer;
+    margin-top: -9px;
+    /* Align center */
+    box-shadow: 0 0 10px var(--neon-blue);
+    border: 2px solid white;
+}
+
+.size-slider-vertical::-moz-range-thumb {
+    height: 24px;
+    width: 24px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: var(--neon-blue);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+@media (max-width: 950px) {
+    .palette-wrapper {
+        bottom: 1rem;
+        padding: 0.8rem 1.2rem;
+        width: 95%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        border-radius: 20px;
+    }
+
+    .btn-color {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .btn-eraser {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+}
