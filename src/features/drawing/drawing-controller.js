@@ -2,7 +2,8 @@
  * Drawing Controller - Manages the gameplay (Drawing) and Judging phases.
  */
 import { createChaosCanvasUI } from './chaos-canvas-renderer.js';
-import { createJudgingUI, spawnFloatingReaction } from '../judging/judging-renderer.js';
+import { createJudgingUI } from '../judging/judging-renderer.js';
+import { spawnFloatingReaction } from '../judging/judging-components.js';
 import { JudgingState } from '../judging/judging-state.js';
 import { RoomAPI } from '../lobby/room-api.js';
 import { appState } from '../../main.js';

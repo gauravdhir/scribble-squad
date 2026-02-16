@@ -100,12 +100,12 @@ describe('Party Renderer', () => {
         expect(mockCallbacks.onUpdateSettings).toHaveBeenCalledWith({ roundDuration: 90 });
 
         // Chat
-        const chatBtn = container.querySelectorAll('.btn-chat-action')[0];
+        const chatBtn = container.querySelectorAll('.btn-state-toggle')[0];
         chatBtn.click();
         expect(mockCallbacks.onUpdateSettings).toHaveBeenCalledWith({ chatEnabled: false });
 
         // Privacy
-        const privacyBtn = container.querySelectorAll('.btn-chat-action')[1];
+        const privacyBtn = container.querySelectorAll('.btn-state-toggle')[1];
         privacyBtn.click();
         expect(mockCallbacks.onUpdateSettings).toHaveBeenCalledWith({ isPrivate: true });
     });
@@ -187,7 +187,7 @@ describe('Party Renderer', () => {
 
         // Leave (Guest)
         container = createRoomLobbyUI(state, false, mockCallbacks);
-        container.querySelector('.btn-leave-room').click();
+        container.querySelector('.status-leave').click();
         expect(mockCallbacks.onLeave).toHaveBeenCalled();
     });
 

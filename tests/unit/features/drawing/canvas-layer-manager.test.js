@@ -1,114 +1,210 @@
-import test from 'node:test';
-import assert from 'node:assert';
-
-// -- CANVAS & DOM MOCK SETUP --
-class MockContext2D {
-    constructor() {
-        this.lineWidth = 1;
-        this.strokeStyle = '#000';
-    }
-    beginPath() { }
-    moveTo() { }
-    lineTo() { }
-    stroke() { }
-    clearRect() { }
-}
-
-class MockCanvas extends Object {
-    constructor() {
-        super();
-        this.tagName = 'CANVAS';
-        this.width = 0;
-        this.height = 0;
-        this.style = {};
-        this.children = [];
-        this._context = new MockContext2D();
-        this._classes = new Set();
-    }
-    getContext(type) { return this._context; }
-    setAttribute() { }
-    get classList() {
-        return {
-            add: (c) => this._classes.add(c),
-            remove: (c) => this._classes.delete(c),
-            contains: (c) => this._classes.has(c)
-        };
-    }
-    // Needed for CanvasLayerManager to append to container
-}
-
-class MockContainer {
-    constructor() {
-        this.children = [];
-        this.innerHTML = '';
-    }
-    appendChild(child) { this.children.push(child); }
-    getBoundingClientRect() { return { width: 1000, height: 1000, left: 0, top: 0 }; }
-}
-
-global.document = {
-    createElement: (tag) => {
-        if (tag === 'canvas') return new MockCanvas();
-        return new MockContainer(); // Default for container
-    }
-};
-
-global.window = {
-    devicePixelRatio: 2
-};
-
+/**
+ * @vitest-environment jsdom
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CanvasLayerManager } from '../../../../src/features/drawing/canvas-layer-manager.js';
 
-test('CanvasLayerManager should create new layer for new user', () => {
-    const container = new MockContainer();
-    const manager = new CanvasLayerManager(container);
+// Mock CanvasEngine - Must use factory function for vi.mock
+vi.mock('../../../../src/features/drawing/canvas-engine.js', () => ({
+    CanvasEngine: class {
+        constructor(canvas) {
+            this.canvas = canvas;
+            this.clear = () => { };
+            this.drawStroke = () => { };
+        }
+    }
+}));
 
-    // getEngine(userId, currentUserId)
-    const engine = manager.getEngine('user1', 'user1');
+const { CanvasEngine } = await import('../../../../src/features/drawing/canvas-engine.js');
 
-    assert.ok(engine, 'Should return an engine');
-    assert.ok(manager.engines.has('user1'), 'Should store engine in map');
-    assert.strictEqual(container.children.length, 1, 'Should append canvas to container');
+describe('CanvasLayerManager', () => {
+    let container;
+    let layerManager;
 
-    // Verify canvas properties
-    const canvas = container.children[0];
-    assert.strictEqual(canvas.width, 2000, 'CanvasEngine should set resolution to 2000');
-    assert.strictEqual(canvas.style.pointerEvents, 'auto', 'Should allow pointer events for current user');
-});
+    beforeEach(() => {
+        container = document.createElement('div');
+        container.style.width = '800px';
+        container.style.height = '600px';
+        document.body.appendChild(container);
 
-test('CanvasLayerManager should reuse existing layer', () => {
-    const container = new MockContainer();
-    const manager = new CanvasLayerManager(container);
+        layerManager = new CanvasLayerManager(container);
+        vi.clearAllMocks();
+    });
 
-    const engine1 = manager.getEngine('user1', 'user1');
-    const engine2 = manager.getEngine('user1', 'user1');
+    it('should initialize with empty engines and layers', () => {
+        expect(layerManager.engines.size).toBe(0);
+        expect(layerManager.layers.size).toBe(0);
+    });
 
-    assert.strictEqual(engine1, engine2, 'Should return same engine instance');
-    assert.strictEqual(container.children.length, 1, 'Should not create duplicate canvas');
-});
+    it('should store container reference', () => {
+        expect(layerManager.container).toBe(container);
+    });
 
-test('CanvasLayerManager should disable pointer events for other users', () => {
-    const container = new MockContainer();
-    const manager = new CanvasLayerManager(container);
+    it('should create new engine for first-time user', () => {
+        const engine = layerManager.getEngine('user1', 'user1');
 
-    manager.getEngine('otherUser', 'currentUser');
+        expect(engine).toBeDefined();
+        expect(layerManager.engines.has('user1')).toBe(true);
+        expect(layerManager.layers.has('user1')).toBe(true);
+    });
 
-    const canvas = container.children[0];
-    assert.strictEqual(canvas.style.pointerEvents, 'none', 'Should disable pointer events for others');
-});
+    it('should return existing engine for known user', () => {
+        const engine1 = layerManager.getEngine('user1', 'user1');
+        const engine2 = layerManager.getEngine('user1', 'user1');
 
-test('CanvasLayerManager.clear should remove all layers', () => {
-    const container = new MockContainer();
-    const manager = new CanvasLayerManager(container);
+        expect(engine1).toBe(engine2);
+        // Should not create new layers/engines
+        expect(layerManager.engines.size).toBe(1);
+        expect(layerManager.layers.size).toBe(1);
+    });
 
-    manager.getEngine('user1', 'user1');
-    manager.getEngine('user2', 'user1');
+    it('should create canvas with correct CSS classes', () => {
+        layerManager.getEngine('user1', 'user1');
 
-    assert.strictEqual(manager.engines.size, 2);
-    assert.strictEqual(container.children.length, 2);
+        const canvas = layerManager.layers.get('user1');
+        expect(canvas.classList.contains('chaos-canvas-layer')).toBe(true);
+    });
 
-    manager.clear();
+    it('should position canvas absolutely', () => {
+        layerManager.getEngine('user1', 'user1');
 
-    assert.strictEqual(manager.engines.size, 0);
-    assert.strictEqual(container.innerHTML, '', 'Should clear container HTML');
+        const canvas = layerManager.layers.get('user1');
+        expect(canvas.style.position).toBe('absolute');
+        expect(canvas.style.top).toBe('0px');
+        expect(canvas.style.left).toBe('0px');
+        expect(canvas.style.width).toBe('100%');
+        expect(canvas.style.height).toBe('100%');
+    });
+
+    it('should enable pointer events for current user layer', () => {
+        layerManager.getEngine('currentUser', 'currentUser');
+
+        const canvas = layerManager.layers.get('currentUser');
+        expect(canvas.style.pointerEvents).toBe('auto');
+    });
+
+    it('should disable pointer events for other user layers', () => {
+        layerManager.getEngine('otherUser', 'currentUser');
+
+        const canvas = layerManager.layers.get('otherUser');
+        expect(canvas.style.pointerEvents).toBe('none');
+    });
+
+    it('should append canvas to container', () => {
+        layerManager.getEngine('user1', 'user1');
+
+        expect(container.children.length).toBe(1);
+        expect(container.children[0]).toBe(layerManager.layers.get('user1'));
+    });
+
+    it('should create multiple independent layers', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.getEngine('user2', 'currentUser');
+        layerManager.getEngine('user3', 'currentUser');
+
+        expect(layerManager.engines.size).toBe(3);
+        expect(layerManager.layers.size).toBe(3);
+        expect(container.children.length).toBe(3);
+    });
+
+    it('should return container bounding rect method', () => {
+        const rect = layerManager.getRect();
+
+        expect(rect).toBeDefined();
+        // Note: In jsdom, dimensions are 0, but the method should work
+        expect(typeof rect.width).toBe('number');
+        expect(typeof rect.height).toBe('number');
+    });
+
+    it('should return all canvas elements', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.getEngine('user2', 'currentUser');
+
+        const canvases = layerManager.getAllCanvases();
+
+        expect(canvases).toHaveLength(2);
+        expect(canvases[0]).toBeInstanceOf(HTMLCanvasElement);
+        expect(canvases[1]).toBeInstanceOf(HTMLCanvasElement);
+    });
+
+    it('should return empty array when no canvases exist', () => {
+        const canvases = layerManager.getAllCanvases();
+
+        expect(canvases).toEqual([]);
+    });
+
+    it('should clear all engines and layers', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.getEngine('user2', 'currentUser');
+
+        layerManager.clear();
+
+        expect(layerManager.engines.size).toBe(0);
+        expect(layerManager.layers.size).toBe(0);
+        expect(container.innerHTML).toBe('');
+    });
+
+    it('should remove DOM elements on clear', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.getEngine('user2', 'currentUser');
+
+        expect(container.children.length).toBe(2);
+
+        layerManager.clear();
+
+        expect(container.children.length).toBe(0);
+    });
+
+    it('should allow creating new layers after clear', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.clear();
+        layerManager.getEngine('user2', 'currentUser');
+
+        expect(layerManager.engines.size).toBe(1);
+        expect(layerManager.layers.has('user2')).toBe(true);
+        expect(layerManager.layers.has('user1')).toBe(false);
+    });
+
+    it('should handle clear on empty manager gracefully', () => {
+        layerManager.clear();
+
+        expect(layerManager.engines.size).toBe(0);
+        expect(layerManager.layers.size).toBe(0);
+    });
+
+    it('should differentiate pointer events based on currentUserId', () => {
+        const currentUserId = 'alice';
+
+        layerManager.getEngine('alice', currentUserId);
+        layerManager.getEngine('bob', currentUserId);
+        layerManager.getEngine('charlie', currentUserId);
+
+        const aliceCanvas = layerManager.layers.get('alice');
+        const bobCanvas = layerManager.layers.get('bob');
+        const charlieCanvas = layerManager.layers.get('charlie');
+
+        expect(aliceCanvas.style.pointerEvents).toBe('auto');
+        expect(bobCanvas.style.pointerEvents).toBe('none');
+        expect(charlieCanvas.style.pointerEvents).toBe('none');
+    });
+
+    it('should maintain layer order in container', () => {
+        layerManager.getEngine('user1', 'currentUser');
+        layerManager.getEngine('user2', 'currentUser');
+        layerManager.getEngine('user3', 'currentUser');
+
+        expect(container.children[0]).toBe(layerManager.layers.get('user1'));
+        expect(container.children[1]).toBe(layerManager.layers.get('user2'));
+        expect(container.children[2]).toBe(layerManager.layers.get('user3'));
+    });
+
+    it('should create CanvasEngine instance for each layer', () => {
+        layerManager.getEngine('user1', 'user1');
+
+        const canvas = layerManager.layers.get('user1');
+        const engine = layerManager.engines.get('user1');
+
+        expect(engine).toBeDefined();
+        expect(engine.canvas).toBe(canvas);
+    });
 });

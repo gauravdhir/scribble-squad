@@ -17,7 +17,10 @@ export function createPickerUI(state, currentUserId, onPickPrompt, onLeave) {
           </div>
           <div class="picker-actions">
               <button class="btn-next btn-liftoff btn-pick-submit">LAUNCH ROUND</button>
-              <button class="btn-text btn-leave-picker" style="margin-top:10px; opacity:0.7">🚪 Leave Squad</button>
+              <button class="btn-state-toggle status-leave btn-leave-picker">
+                <span class="toggle-icon">🚪</span>
+                <span class="toggle-text">LEAVE SQUAD</span>
+              </button>
           </div>
         </div>
       `;
@@ -41,7 +44,10 @@ export function createPickerUI(state, currentUserId, onPickPrompt, onLeave) {
         <div class="picker-wait-ui">
           <span class="pulse-dot"></span>
           <p><span class="highlight-name">${state.pickerId}</span> is dreaming up the next chaos...</p>
-          <button class="btn-text btn-leave-wait" style="margin-top:15px; font-size:0.9rem; opacity:0.6">🚪 Leave Squad</button>
+          <button class="btn-state-toggle status-leave btn-leave-wait">
+            <span class="toggle-icon">🚪</span>
+            <span class="toggle-text">LEAVE SQUAD</span>
+          </button>
         </div>
       `;
     const leaveBtn = ritualContainer.querySelector('.btn-leave-wait');

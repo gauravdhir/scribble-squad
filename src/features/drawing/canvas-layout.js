@@ -114,13 +114,6 @@ export function createSidebar(isHost, isProvider, callbacks) {
         });
 
         const themeMenu = createElement('div', { classes: ['theme-selection-menu'] });
-        Object.assign(themeMenu.style, {
-            position: 'absolute', left: '60px', bottom: '0',
-            background: 'rgba(10, 14, 39, 0.95)', border: '1px solid var(--neon-blue)',
-            borderRadius: '15px', padding: '10px', display: 'none',
-            flexDirection: 'column', gap: '8px', zIndex: '200',
-            width: '140px', boxShadow: '0 0 20px rgba(0, 242, 255, 0.3)'
-        });
 
         const themeChoices = [
             { id: THEMES.SPACE, name: 'Default Space', icon: '🌌' },
@@ -133,29 +126,21 @@ export function createSidebar(isHost, isProvider, callbacks) {
         themeChoices.forEach(choice => {
             const btn = createElement('button', { classes: ['theme-choice-btn'] });
             btn.innerHTML = `${choice.icon} ${choice.name}`;
-            Object.assign(btn.style, {
-                background: 'transparent', border: 'none', color: 'white',
-                padding: '8px', textAlign: 'left', cursor: 'pointer',
-                borderRadius: '8px', fontSize: '0.9rem', width: '100%',
-                transition: 'background 0.2s'
-            });
-            btn.onmouseenter = () => btn.style.background = 'rgba(255, 255, 255, 0.1)';
-            btn.onmouseleave = () => btn.style.background = 'transparent';
+
             btn.onclick = (e) => {
                 e.stopPropagation();
                 if (onThemeSelect) onThemeSelect(choice.id);
-                themeMenu.style.display = 'none';
+                themeMenu.classList.remove('active');
             };
             themeMenu.appendChild(btn);
         });
 
         themeBtn.onclick = (e) => {
             e.stopPropagation();
-            const isVisible = themeMenu.style.display === 'flex';
-            themeMenu.style.display = isVisible ? 'none' : 'flex';
+            themeMenu.classList.toggle('active');
         };
 
-        document.addEventListener('click', () => themeMenu.style.display = 'none');
+        document.addEventListener('click', () => themeMenu.classList.remove('active'));
         themeBtn.appendChild(themeMenu);
         sidebar.appendChild(themeBtn);
     }

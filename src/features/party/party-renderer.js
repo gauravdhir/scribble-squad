@@ -56,9 +56,9 @@ export function createRoomLobbyUI(state, isHost, callbacks) {
     `;
 
     const leaveBtn = createElement('button', {
-      classes: ['btn-delete-room', 'btn-leave-room'],
-      text: 'LEAVE SQUAD'
+      classes: ['btn-state-toggle', 'status-leave']
     });
+    leaveBtn.innerHTML = '<span class="toggle-icon">🚪</span><span class="toggle-text">LEAVE SQUAD</span>';
     leaveBtn.onclick = () => {
       showConfirmationModal('Leave the squad?', onLeave);
     };
