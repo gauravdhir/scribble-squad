@@ -3532,3 +3532,37 @@ body {
     .chat-panel { width: 95% !important; right: 2.5% !important; bottom: 90px !important; height: 60vh !important; }
     .chat-toggle-btn { bottom: 20px !important; right: 20px !important; }
 }
+
+/* --- FIXES FOR MOBILE CLIPPING (Added by Gaurav) --- */
+@media (max-width: 650px) {
+    .theme-selection-menu { left: 0 !important; top: 50px !important; bottom: auto !important; width: 200px !important; }
+    .app-header { flex-wrap: wrap; height: auto; }
+    .header-inner { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    .logo-container { margin-bottom: 0.5rem; }
+    /* Ensure sidebar keeps z-index high */
+    .canvas-sidebar { z-index: 2000 !important; }
+}
+
+/* --- HOST LOBBY TOGGLES --- */
+.host-toggles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.toggle-item { display: flex; flex-direction: column; gap: 0.5rem; }
+.toggle-label { font-size: 0.7rem; font-weight: 700; color: rgba(255, 255, 255, 0.6); letter-spacing: 1px; }
+.btn-state-toggle { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 0.8rem; padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: white; cursor: pointer; transition: all 0.2s ease; width: 100%; min-height: 50px; }
+.btn-state-toggle:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+.toggle-icon { font-size: 1.2rem; }
+.toggle-text { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+
+.btn-state-toggle.status-enabled { background: rgba(0, 255, 170, 0.1); border-color: #00ffaa; color: #00ffaa; box-shadow: 0 0 10px rgba(0, 255, 170, 0.2); }
+.btn-state-toggle.status-disabled { background: rgba(255, 68, 68, 0.1); border-color: #ff4444; color: #ff4444; }
+.btn-state-toggle.status-private { background: rgba(255, 0, 230, 0.1); border-color: #ff00e6; color: #ff00e6; box-shadow: 0 0 10px rgba(255, 0, 230, 0.2); }
+.btn-state-toggle.status-public { background: rgba(0, 242, 255, 0.1); border-color: #00f2ff; color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+
+/* --- FIX FOR MOBILE CHAT (Added by Reyansh) --- */
+@media (max-width: 650px) {
+    .chat-panel { width: 90vw !important; height: 75vh !important; right: 5vw !important; bottom: 85px !important; border-radius: 12px; }
+    /* Fix chat messages not wrapping properly */
+    .chat-msg-item { max-width: 90%; }
+    /* Ensure input area doesn't get squashed */
+    .chat-footer { padding: 0.8rem; }
+    .chat-input { font-size: 16px; /* prevent zoom */ }
+}

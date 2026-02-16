@@ -10,6 +10,7 @@ import { RoomAPI } from '../lobby/room-api.js';
 import { toast } from '../ui/toast.js';
 import { getFriendlyMessage } from '../../utils/messages.js';
 import { themeAudio } from '../theme/theme-audio.js';
+import { showChat } from '../chat/chat-renderer.js';
 
 
 export async function renderRoomLobby(roomCode, existingRoomData = null, options = {}) {
@@ -58,6 +59,11 @@ export async function renderRoomLobby(roomCode, existingRoomData = null, options
     partyState.roomName = room.name;
     partyState.pickerId = room.currentPickerId;
     partyState.status = room.status;
+
+    // Ensure Chat Overlay is Visible
+    if (appState.profileState.displayName) {
+        showChat(roomCode);
+    }
     partyState.roundDuration = room.roundDuration || 60;
     partyState.chatEnabled = room.chatEnabled;
     partyState.participants = room.participants.map(p => ({
@@ -171,6 +177,8 @@ export async function renderRoomLobby(roomCode, existingRoomData = null, options
         },
         onUpdateSettings: (updates) => {
             RoomAPI.updateRoom(roomCode, updates);
+            // Ensure we stay in lobby view if we are currently there
+            renderRoomLobby(roomCode, null, { forceLobby: true });
         }
     };
 

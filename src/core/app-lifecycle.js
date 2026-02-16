@@ -67,9 +67,17 @@ export function setupGlobalSubscriptions() {
             if (updatedRoom.status === 'LOBBY' || updatedRoom.status === 'PICKING_PROMPT') {
                 renderRoomLobby(updatedRoom.code, updatedRoom);
             } else if (updatedRoom.status === 'PLAYING') {
-                if (!viewManager.isCurrent('drawing')) renderChaosCanvas(updatedRoom.currentPrompt, updatedRoom.currentProviderName);
+                if (viewManager.isCurrent('room')) {
+                    renderRoomLobby(updatedRoom.code, updatedRoom, { forceLobby: true });
+                } else if (!viewManager.isCurrent('drawing')) {
+                    renderChaosCanvas(updatedRoom.currentPrompt, updatedRoom.currentProviderName);
+                }
             } else if (updatedRoom.status === 'JUDGING') {
-                if (!viewManager.isCurrent('judging')) renderJudgingRoom(updatedRoom.masterpiece);
+                if (viewManager.isCurrent('room')) {
+                    renderRoomLobby(updatedRoom.code, updatedRoom, { forceLobby: true });
+                } else if (!viewManager.isCurrent('judging')) {
+                    renderJudgingRoom(updatedRoom.masterpiece);
+                }
             }
         }
     });
