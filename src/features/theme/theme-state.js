@@ -8,7 +8,8 @@ export const THEMES = {
 
 class ThemeState {
     constructor() {
-        this.currentTheme = THEMES.SPACE; // Default
+        const savedTheme = localStorage.getItem('scribble_theme');
+        this.currentTheme = Object.values(THEMES).includes(savedTheme) ? savedTheme : THEMES.SPACE;
         this.listeners = new Set();
     }
 
@@ -19,6 +20,7 @@ class ThemeState {
         }
 
         this.currentTheme = themeId;
+        localStorage.setItem('scribble_theme', themeId);
         this._notify();
 
         // If a room code is provided, broadcast to others

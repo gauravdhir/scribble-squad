@@ -9,6 +9,7 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src')
         },
         include: ['tests/unit/**/*.test.mjs', 'tests/unit/**/*.test.js'],
+        setupFiles: ['./tests/setup.js'],
     },
     resolve: {
         alias: {

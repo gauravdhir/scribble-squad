@@ -379,3 +379,16 @@ body::before {
     border-color: rgba(255, 255, 255, 0.2) !important;
     box-shadow: none !important;
 }
+/* --- MOBILE OPTIMIZATIONS (ADDED BY GAURAV) --- */
+@media (max-width: 850px) {
+    .hero-section { flex-direction: column !important; padding-top: 2rem !important; }
+    .create-card { width: 90% !important; padding: 2rem !important; }
+    .create-text { font-size: 2rem !important; }
+    .join-section { align-items: center !important; width: 100% !important; margin-top: 2rem !important; }
+    .room-code-input { width: 140px !important; }
+    .discovery-grid { flex-direction: column !important; align-items: center !important; padding: 0 !important; overflow-x: hidden !important; min-height: unset !important; }
+    .party-card { width: 95% !important; min-width: unset !important; max-width: 380px !important; margin: 0 0 3rem 0 !important; transform: none !important; height: auto !important; min-height: 220px !important; }
+    .party-card:hover { transform: scale(1.02) !important; z-index: 10 !important; }
+    .party-card:nth-child(even), .party-card:nth-child(odd) { transform: none !important; z-index: 1 !important; }
+    .knock-btn-wrapper { position: absolute !important; bottom: -35px !important; }
+}

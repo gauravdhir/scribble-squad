@@ -1,25 +1,22 @@
-/**
- * Test Suite: Identity Randomizer
- * Purpose: Verification of the silly name generation logic
- */
-import test from 'node:test';
-import assert from 'node:assert';
+import { describe, it, expect } from 'vitest';
 import { generateSillyName } from '../../../src/features/identity/randomizer.js';
 
-test('generateSillyName should return a string with two words', () => {
-    const name = generateSillyName();
-    assert.strictEqual(typeof name, 'string');
-    const parts = name.split(' ');
-    assert.strictEqual(parts.length, 2, `Expected 2 words, got: ${name}`);
-});
+describe('Identity Randomizer', () => {
+    it('should return a string with two words', () => {
+        const name = generateSillyName();
+        expect(typeof name).toBe('string');
+        const parts = name.split(' ');
+        expect(parts.length).toBe(2);
+    });
 
-test('generateSillyName should produce unique names on consecutive calls', () => {
-    const name1 = generateSillyName();
-    const name2 = generateSillyName();
-    assert.notStrictEqual(name1, name2);
-});
+    it('should produce unique-ish names (not identical on consecutive calls)', () => {
+        const name1 = generateSillyName();
+        const name2 = generateSillyName();
+        expect(name1).not.toBe(name2);
+    });
 
-test('generateSillyName should only contain alphanumeric characters and spaces', () => {
-    const name = generateSillyName();
-    assert.match(name, /^[a-zA-Z\s]+$/);
+    it('should only contain alphanumeric characters and spaces', () => {
+        const name = generateSillyName();
+        expect(name).toMatch(/^[a-zA-Z\s]+$/);
+    });
 });

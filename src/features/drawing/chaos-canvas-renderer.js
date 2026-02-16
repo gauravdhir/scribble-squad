@@ -39,22 +39,7 @@ function createSidebar(roomCode, isHost, onLeave, updateBadgeCallback, providerN
 
 
     const sidebar = createElement('div', { classes: ['canvas-sidebar'] });
-    sidebar.style.position = 'absolute';
-    sidebar.style.left = '100px';
-    sidebar.style.top = '35%';
-    sidebar.style.transform = 'translateY(-50%)';
-    sidebar.style.display = 'flex';
-    sidebar.style.flexDirection = 'column';
-    sidebar.style.gap = '15px';
-    sidebar.style.zIndex = '1000';
-
-    // CONTAINER STYLING (New)
-    sidebar.style.padding = '12px';
-    sidebar.style.borderRadius = '30px';
-    sidebar.style.background = 'rgba(20, 20, 35, 0.6)'; // Dark glass
-    sidebar.style.backdropFilter = 'blur(8px)';
-    sidebar.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    sidebar.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5), 0 0 30px rgba(100, 200, 255, 0.1)'; // Inner/Outer glow
+    // Styles moved to style.css for responsive control
 
     if (isHost) {
         // Host: Finish Mission & Squad Management

@@ -1,25 +1,21 @@
-/**
- * Test Suite: LobbyService
- * Purpose: Room discovery and management logic
- */
-import test from 'node:test';
-import assert from 'node:assert';
-// Note: We'll mock the API later, for now we test state transitions
+import { describe, it, expect } from 'vitest';
 import { LobbyService } from '../../../src/features/lobby/lobby-service.js';
 
-test('LobbyService.calculateRoomStatus should return "FULL" when count is 8', () => {
-    const service = new LobbyService();
-    assert.strictEqual(service.calculateRoomStatus(8), 'FULL');
-});
+describe('LobbyService', () => {
+    it('should return "FULL" when count is 8', () => {
+        const service = new LobbyService();
+        expect(service.calculateRoomStatus(8)).toBe('FULL');
+    });
 
-test('LobbyService.calculateRoomStatus should return "OPEN" when count is less than 8', () => {
-    const service = new LobbyService();
-    assert.strictEqual(service.calculateRoomStatus(7), 'OPEN');
-});
+    it('should return "OPEN" when count is less than 8', () => {
+        const service = new LobbyService();
+        expect(service.calculateRoomStatus(7)).toBe('OPEN');
+    });
 
-test('LobbyService should generate a valid 4-letter room code', () => {
-    const service = new LobbyService();
-    const code = service.generateRoomCode();
-    assert.strictEqual(code.length, 4);
-    assert.match(code, /^[A-Z]{4}$/);
+    it('should generate a valid 4-letter room code', () => {
+        const service = new LobbyService();
+        const code = service.generateRoomCode();
+        expect(code).toHaveLength(4);
+        expect(code).toMatch(/^[A-Z]{4}$/);
+    });
 });

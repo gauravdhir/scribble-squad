@@ -1,5 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { JSDOM } from 'jsdom';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { themeState, THEMES } from '../../src/features/theme/theme-state.js';
 import { ThemeRenderer } from '../../src/features/theme/theme-renderer.js';
 
@@ -7,15 +6,18 @@ describe('Theme System', () => {
     let container;
 
     beforeEach(() => {
-        const dom = new JSDOM('<!DOCTYPE html><div></div>');
-        global.document = dom.window.document;
-        global.window = dom.window;
         container = document.createElement('div');
+        document.body.appendChild(container);
 
         // Reset state
         localStorage.clear();
         themeState.currentTheme = THEMES.SPACE;
         themeState.listeners.clear();
+    });
+
+    afterEach(() => {
+        document.body.innerHTML = '';
+        vi.clearAllMocks();
     });
 
     describe('ThemeState', () => {
