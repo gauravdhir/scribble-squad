@@ -23,7 +23,7 @@ export function createPaletteUI({ onSelectColor, onSelectEraser, onBrushSize, on
     /**
      * Helper to wrap a tool button with a hidden slider.
      */
-    const createToolWithSlider = (toolBtn, onSizeChange, initialSize, min, max) => {
+    const createToolWithSlider = (toolBtn, onSizeChange, initialSize, min, max, onSelect) => {
         const wrapper = createElement('div', { classes: ['tool-item-wrapper'] });
         const sliderPopup = createElement('div', { classes: ['tool-slider-popup'] });
 
@@ -37,19 +37,27 @@ export function createPaletteUI({ onSelectColor, onSelectEraser, onBrushSize, on
             onSizeChange(parseInt(e.target.value));
         };
 
+        // Prevent click inside slider from closing it
+        slider.onclick = (e) => e.stopPropagation();
+
         sliderPopup.appendChild(slider);
         wrapper.appendChild(sliderPopup);
         wrapper.appendChild(toolBtn);
 
-        // Double-click to toggle slider
-        toolBtn.addEventListener('dblclick', (e) => {
+        // Click Logic: Select tool -> Toggle Slider if already selected
+        toolBtn.onclick = (e) => {
             e.stopPropagation();
-            const wasVisible = sliderPopup.classList.contains('visible');
-            clearSliders();
-            if (!wasVisible) {
-                sliderPopup.classList.add('visible');
+            const isActive = toolBtn.classList.contains('active');
+
+            if (isActive) {
+                // Already active: Toggle slider
+                sliderPopup.classList.toggle('visible');
+            } else {
+                // New tool: Select it (handled by callback), hide all other sliders
+                clearSliders();
+                if (onSelect) onSelect();
             }
-        });
+        };
 
         // Close sliders on outside click
         document.addEventListener('mousedown', (e) => {
@@ -57,6 +65,13 @@ export function createPaletteUI({ onSelectColor, onSelectEraser, onBrushSize, on
                 sliderPopup.classList.remove('visible');
             }
         });
+
+        // Touch support for closing
+        document.addEventListener('touchstart', (e) => {
+            if (!wrapper.contains(e.target)) {
+                sliderPopup.classList.remove('visible');
+            }
+        }, { passive: true });
 
         return wrapper;
     };
@@ -68,28 +83,29 @@ export function createPaletteUI({ onSelectColor, onSelectEraser, onBrushSize, on
             attr: { style: `background-color: ${color};`, 'data-color': color }
         });
 
-        btn.onclick = () => {
-            clearSliders();
+        const onSelect = () => {
             toolsRow.querySelectorAll('.btn-color, .btn-eraser').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             onSelectColor(color);
         };
 
-        const wrapped = createToolWithSlider(btn, onBrushSize, 5, 1, 50);
+        // Pass a wrapper function that handles UI updates + Callback
+        // Note: The click handler in createToolWithSlider will call this if not active
+        const wrapped = createToolWithSlider(btn, onBrushSize, 5, 1, 50, onSelect);
         toolsRow.appendChild(wrapped);
     });
 
-    // 2. Eraser Tool (at the end)
+    // 2. Eraser Tool
     const eraserBtn = createElement('button', { classes: ['btn-eraser'] });
     eraserBtn.innerHTML = '🧹';
-    eraserBtn.onclick = () => {
-        clearSliders();
+
+    const onEraserSelect = () => {
         toolsRow.querySelectorAll('.btn-color, .btn-eraser').forEach(b => b.classList.remove('active'));
         eraserBtn.classList.add('active');
         onSelectEraser();
     };
 
-    const wrappedEraser = createToolWithSlider(eraserBtn, onEraserSize, 30, 5, 100);
+    const wrappedEraser = createToolWithSlider(eraserBtn, onEraserSize, 30, 5, 100, onEraserSelect);
     toolsRow.appendChild(wrappedEraser);
 
     container.appendChild(toolsRow);

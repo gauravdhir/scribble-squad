@@ -3566,3 +3566,12 @@ body {
     .chat-footer { padding: 0.8rem; }
     .chat-input { font-size: 16px; /* prevent zoom */ }
 }
+
+/* --- MOBILE PALETTE/CHAT OVERLAP FIX --- */
+@media (max-width: 650px) {
+    .chat-panel { width: 90vw !important; right: 5vw !important; bottom: 120px !important; height: 70vh !important; }
+    .chat-toggle-btn { bottom: 120px !important; right: 20px !important; }
+    /* Make palette slider easier to hit */
+    .tool-slider-popup { min-width: 40px; padding: 10px; }
+    .size-slider-vertical { width: 30px; height: 120px; }
+}
